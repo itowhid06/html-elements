@@ -35,67 +35,67 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 class HTML_Elements {
 
-  /**
-   * Class constructor.
-   *
-   * @since 1.0.0
-   */
-  public function __construct() {
+	/**
+	 * Class constructor.
+	 *
+	 * @since 1.0.0
+	 */
+	public function __construct() {
 
-    // Load class constants.
-    $this->setup_constants();
+		// Load class constants.
+		$this->setup_constants();
 
-    // Register an autoloader.
-    spl_autoload_register( array( $this, 'autoload' ) );
+		// Register an autoloader.
+		spl_autoload_register( array( $this, 'autoload' ) );
 
-  }
+	}
 
-  /**
-   * Define library constants.
-   *
-   * @since 1.0.0
-   * @return void
-   */
-  private function setup_constants() {
+	/**
+	 * Define library constants.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	private function setup_constants() {
 
-    if ( ! defined( __NAMESPACE__ .'\HTML_HELPER_VERSION' ) ) {
+		if ( ! defined( __NAMESPACE__ .'\HTML_HELPER_VERSION' ) ) {
 			define( __NAMESPACE__ .'\HTML_HELPER_VERSION', '1.0.0' );
 		}
 
-    if ( ! defined( __NAMESPACE__ .'\HTML_HELPER_DIR' ) ) {
+		if ( ! defined( __NAMESPACE__ .'\HTML_HELPER_DIR' ) ) {
 			define( __NAMESPACE__ .'\HTML_HELPER_DIR', plugin_dir_path( __FILE__ ) );
 		}
 
-    if ( ! defined( __NAMESPACE__ .'\HTML_HELPER_URL' ) ) {
+		if ( ! defined( __NAMESPACE__ .'\HTML_HELPER_URL' ) ) {
 			define( __NAMESPACE__ .'\HTML_HELPER_URL', plugin_dir_url( __FILE__ ) );
 		}
 
-  }
+	}
 
-  /**
-   * Autoload all supported elements classes.
-   *
-   * @since 1.0.0
-   * @param  string $class class name to load.
-   */
-  public function autoload( $class ) {
+	/**
+	 * Autoload all supported elements classes.
+	 *
+	 * @since 1.0.0
+	 * @param  string $class class name to load.
+	 */
+	public function autoload( $class ) {
 
-    $class = ltrim( $class , '\\' );
+		$class = ltrim( $class , '\\' );
 
-    if ( 0 !== strpos( $class, __NAMESPACE__ ) ) {
-        return;
-    }
+		if ( 0 !== strpos( $class, __NAMESPACE__ ) ) {
+			return;
+		}
 
-    $class = str_replace( __NAMESPACE__ , '', $class );
-    $class = strtolower( str_replace( '\\', '', $class ) );
+		$class = str_replace( __NAMESPACE__ , '', $class );
+		$class = strtolower( str_replace( '\\', '', $class ) );
 
-    $class_path = HTML_HELPER_DIR . 'includes/class-' . $class . '.php';
+		$class_path = HTML_HELPER_DIR . 'includes/class-' . $class . '.php';
 
-    if( file_exists( $class_path ) ) {
-      require( $class_path );
-    }
+		if( file_exists( $class_path ) ) {
+			require( $class_path );
+		}
 
-  }
+	}
 
 }
 
