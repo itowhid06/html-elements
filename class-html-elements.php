@@ -89,10 +89,10 @@ class HTML_Elements {
 		$class = str_replace( __NAMESPACE__ , '', $class );
 		$class = strtolower( str_replace( '\\', '', $class ) );
 
-		$class_path = HTML_HELPER_DIR . 'includes/class-' . $class . '.php';
+		$file = HTML_HELPER_DIR . 'includes/class-' . $class . '.php';
 
-		if( file_exists( $class_path ) ) {
-			require( $class_path );
+		if( file_exists( $file ) ) {
+			require( $file );
 		}
 
 	}
