@@ -10,11 +10,20 @@
 
 namespace AT;
 
-abstract class Field {
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+abstract class Fields {
 
   public static function begin_html( $field ) {
 
     return "testing_open";
+
+  }
+
+  public static function html( $field ) {
+
+    return 'field_content';
 
   }
 

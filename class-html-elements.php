@@ -25,7 +25,7 @@
 
 namespace AT;
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
@@ -80,20 +80,64 @@ class HTML_Elements {
 	 */
 	public function autoload( $class ) {
 
-		$class = ltrim( $class , '\\' );
+		$class        = ltrim( $class , '\\' );
+		$partial_path = 'includes/class-';
 
 		if ( 0 !== strpos( $class, __NAMESPACE__ ) ) {
-			return;
+		  return;
 		}
 
+		// Retrieve class name.
 		$class = str_replace( __NAMESPACE__ , '', $class );
 		$class = strtolower( str_replace( '\\', '', $class ) );
 
-		$file = HTML_HELPER_DIR . 'includes/class-' . $class . '.php';
+		// Verify whether it's a field class.
+		$is_field = ( substr( $class, 0, 6 ) == 'fields' ) ? true : false;
+
+		// Adjust class name and path if the class being loaded is a field.
+		if( $is_field ) {
+		  $class        = substr( $class, 6 );
+		  $partial_path = 'includes/fields/';
+		}
+
+		$file = HTML_HELPER_DIR . $partial_path . $class . '.php';
 
 		if( file_exists( $file ) ) {
-			require( $file );
+		  require( $file );
 		}
+
+	}
+
+	/**
+	 * Render a supported element.
+	 *
+	 * @since 1.0.0
+	 * @param  string $type       	the type of element to render.
+	 * @param  string $label      	label to assign to the element.
+	 * @param  string $description  field description.
+	 * @param  array  $attributes 	additional attributes to pass to the element.
+	 * @return void
+	 */
+	public static function render( $type, $label, $description = '', $attributes = array() ) {
+
+		$field = '';
+
+		echo call_user_func( array( self::get_class_name( $type ), 'html' ), $field );
+
+	}
+
+	/**
+	 * Retrieve the class name of a field.
+	 *
+	 * @since 1.0.0
+	 * @param  string $field_type the type of field to retrieve.
+	 * @return string        			the class name.
+	 */
+	private static function get_class_name( $field_type ) {
+
+		$class_name = __NAMESPACE__ .'\\Fields\\' . ucfirst( $field_type );
+
+		return $class_name;
 
 	}
 
@@ -101,3 +145,5 @@ class HTML_Elements {
 
 use \AT\HTML_Elements;
 $test = new HTML_Elements;
+
+$test->render( 'button', 'test' );
