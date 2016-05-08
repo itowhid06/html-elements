@@ -80,30 +80,35 @@ class HTML_Elements {
 	 */
 	public function autoload( $class ) {
 
-		$class        = ltrim( $class , '\\' );
-		$partial_path = 'includes/class-';
+		$class = ltrim( $class , '\\' );
 
+		// Bail if class being loaded isn't coming from here.
 		if ( 0 !== strpos( $class, __NAMESPACE__ ) ) {
 		  return;
 		}
 
-		// Retrieve class name.
-		$class = str_replace( __NAMESPACE__ , '', $class );
-		$class = strtolower( str_replace( '\\', '', $class ) );
+		$namespace = explode( '\\', $class );
 
-		// Verify whether it's a field class.
-		$is_field = ( substr( $class, 0, 6 ) == 'fields' ) ? true : false;
-
-		// Adjust class name and path if the class being loaded is a field.
-		if( $is_field ) {
-		  $class        = substr( $class, 6 );
-		  $partial_path = 'includes/fields/';
+		foreach ( $namespace as $key => $value ) {
+			if( empty( $value ) ) {
+				unset( $namespace[ $key ] );
+			}
 		}
 
-		$file = HTML_HELPER_DIR . $partial_path . $class . '.php';
+		// Adjust file name.
+		$file_name = implode( DIRECTORY_SEPARATOR, $namespace );
+		$file_name = str_replace( __NAMESPACE__ , '', $file_name );
+		$file_name = strtolower( str_replace( '\\', '', $file_name ) );
 
-		if( file_exists( $file ) ) {
-		  require( $file );
+		// Adjust file name for abstract class.
+		if( $file_name == DIRECTORY_SEPARATOR . 'fields' ) {
+			$file_name = DIRECTORY_SEPARATOR . 'class-fields';
+		}
+
+		$file_path = HTML_HELPER_DIR . 'includes' . $file_name . '.php';
+
+		if( file_exists( $file_path ) ) {
+			require_once( $file_path );
 		}
 
 	}
