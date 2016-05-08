@@ -13,23 +13,56 @@ namespace AT;
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Fields class to handle all field types specifications.
+ *
+ * @since 1.0.0
+ */
 abstract class Fields {
 
+  /**
+   * Opening markup for the field's wrapper.
+   *
+   * @param  [type] $field [description]
+   * @return string
+   */
   public static function begin_html( $field ) {
 
-    return "testing_open";
+    return '';
 
   }
 
+  /**
+   * Markup specific to the field's type.
+   *
+   * @param  [type] $field [description]
+   * @return string
+   */
   public static function html( $field ) {
 
-    return 'field_content';
+    return '';
 
   }
 
+  /**
+   * Closing markup for the field's wrapper.
+   *
+   * @param  [type] $field [description]
+   * @return string
+   */
   public static function end_html( $field ) {
 
-    return "testing_end";
+    return '';
+
+  }
+
+  /**
+   * Helper method to render attributes of each field.
+   *
+   * @param  array $attributes list of attributes.
+   * @return string
+   */
+  public static function render_attributes( $attributes ) {
 
   }
 

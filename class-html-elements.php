@@ -84,7 +84,7 @@ class HTML_Elements {
 
 		// Bail if class being loaded isn't coming from here.
 		if ( 0 !== strpos( $class, __NAMESPACE__ ) ) {
-		  return;
+			return;
 		}
 
 		$namespace = explode( '\\', $class );
@@ -143,6 +143,29 @@ class HTML_Elements {
 		$class_name = __NAMESPACE__ .'\\Fields\\' . ucfirst( $field_type );
 
 		return $class_name;
+
+	}
+
+	/**
+	 * Normalize parameters for all fields.
+	 *
+	 * @since 1.0.0
+	 * @param  array $field field details.
+	 * @return array
+	 */
+	private function normalize_field( $field ) {
+
+		$field = wp_parse_args( $field, array(
+			'id'          => '',
+			'name'        => '',
+			'std'         => '',
+			'desc'        => '',
+			'placeholder' => '',
+			'class'       => array(),
+			'attributes'  => array(),
+		) );
+
+		return $field;
 
 	}
 
