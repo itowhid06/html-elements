@@ -117,17 +117,27 @@ class HTML_Elements {
 	 * Render a supported element.
 	 *
 	 * @since 1.0.0
-	 * @param  string $type       	the type of element to render.
-	 * @param  string $label      	label to assign to the element.
-	 * @param  string $description  field description.
-	 * @param  array  $attributes 	additional attributes to pass to the element.
+	 * @param  string $type the type of element to render.
+	 * @param  array  $args field's settings.
 	 * @return void
 	 */
-	public static function render( $type, $label, $description = '', $attributes = array() ) {
+	public static function render( $type, $args ) {
 
-		$field = '';
+		$output           = '';
+		$field_type_class = self::get_class_name( $type );
 
-		echo call_user_func( array( self::get_class_name( $type ), 'html' ), $field );
+		if( ! empty ( $type ) && is_array( $args ) ) {
+
+			// Normalize field and convert to object.
+			$args = self::normalize_field( $args );
+
+			$output  = call_user_func( array( self::get_class_name( $type ), 'begin_html' ), $args );
+			$output .= call_user_func( array( self::get_class_name( $type ), 'html' ), $args );
+			$output .= call_user_func( array( self::get_class_name( $type ), 'end_html' ), $args );
+
+		}
+
+		echo $output;
 
 	}
 
@@ -151,21 +161,22 @@ class HTML_Elements {
 	 *
 	 * @since 1.0.0
 	 * @param  array $field field details.
-	 * @return array
+	 * @return object
 	 */
-	private function normalize_field( $field ) {
+	private static function normalize_field( $field ) {
 
 		$field = wp_parse_args( $field, array(
 			'id'          => '',
 			'name'        => '',
-			'std'         => '',
+			'value'       => '',
+			'label'       => '',
 			'desc'        => '',
 			'placeholder' => '',
-			'class'       => array(),
+			'class'       => '',
 			'attributes'  => array(),
 		) );
 
-		return $field;
+		return (object) $field;
 
 	}
 
@@ -174,4 +185,9 @@ class HTML_Elements {
 use \AT\HTML_Elements;
 $test = new HTML_Elements;
 
-$test->render( 'button', 'test' );
+$test->render( 'button', array(
+	'id'=> 'lol',
+	'name' => 'test',
+	'class' => 'test test2',
+	'label' => 'Testing label'
+));
