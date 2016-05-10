@@ -56,7 +56,7 @@ abstract class Fields {
 	 */
 	public static function end_html( $field ) {
 
-		$output  = ( isset( $field->desc ) && ! empty( $field->desc ) ) ? '<p class="'. self::get_field_id( $field ) .'-description" class="description">' . esc_html( $field->desc ) . '</p>': '';
+		$output  = ( isset( $field->desc ) && ! empty( $field->desc ) ) ? '<p id="'. esc_attr( $field->id ) .'-description" class="description">' . esc_html( $field->desc ) . '</p>': '';
 		$output .= '</div>';
 
 		return $output;
@@ -69,7 +69,7 @@ abstract class Fields {
 	 * @param  object $field the field to work with.
 	 * @return mixed        the value of the field.
 	 */
-	public static function value( $field ) {
+	public static function get_value( $field ) {
 
 		return '';
 
@@ -87,7 +87,8 @@ abstract class Fields {
 		$field = wp_parse_args( $field, array(
 			'id'          => '',
 			'name'        => '',
-			'std'         => '',
+			'value'       => '',
+			'options'     => array(),
 			'type'        => $type,
 			'desc'        => '',
 			'placeholder' => '',
@@ -147,7 +148,7 @@ abstract class Fields {
 
 		foreach ( $attributes as $key => $value ) {
 
-			if ( false === $value || '' === $value )
+			if ( false === $value )
 				continue;
 
 			if ( is_array( $value ) ) {
