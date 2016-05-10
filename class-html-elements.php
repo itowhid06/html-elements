@@ -16,7 +16,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
- * @author     Alessandro Tesoro <alessandro.tesoro@icloud.com>
+ * @author     Alessandro Tesoro
  * @version    1.0.0
  * @copyright  (c) 2016 Alessandro Tesoro
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GNU LESSER GENERAL PUBLIC LICENSE
@@ -128,8 +128,7 @@ class HTML_Elements {
 
 		if( ! empty ( $type ) && is_array( $args ) ) {
 
-			// Normalize field and convert to object.
-			$args = self::normalize_field( $args );
+			$args = call_user_func( array( self::get_class_name( $type ), 'normalize' ), $type, $args );
 
 			$output  = call_user_func( array( self::get_class_name( $type ), 'begin_html' ), $args );
 			$output .= call_user_func( array( self::get_class_name( $type ), 'html' ), $args );
@@ -156,38 +155,4 @@ class HTML_Elements {
 
 	}
 
-	/**
-	 * Normalize parameters for all fields.
-	 *
-	 * @since 1.0.0
-	 * @param  array $field field details.
-	 * @return object
-	 */
-	private static function normalize_field( $field ) {
-
-		$field = wp_parse_args( $field, array(
-			'id'          => '',
-			'name'        => '',
-			'value'       => '',
-			'label'       => '',
-			'desc'        => '',
-			'placeholder' => '',
-			'class'       => '',
-			'attributes'  => array(),
-		) );
-
-		return (object) $field;
-
-	}
-
 }
-
-use \AT\HTML_Elements;
-$test = new HTML_Elements;
-
-$test->render( 'button', array(
-	'id'=> 'lol',
-	'name' => 'test',
-	'class' => 'test test2',
-	'label' => 'Testing label'
-));

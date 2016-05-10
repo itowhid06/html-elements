@@ -2,7 +2,7 @@
 /**
  * Abstract class to handle all the field types.
  *
- * @author     Alessandro Tesoro <alessandro.tesoro@icloud.com>
+ * @author     Alessandro Tesor
  * @version    1.0.0
  * @copyright  (c) 2016 Alessandro Tesoro
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GNU LESSER GENERAL PUBLIC LICENSE
@@ -20,106 +20,167 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 abstract class Fields {
 
-  /**
-   * Opening markup for the field's wrapper.
-   *
-   * @param  object $field the field to work with.
-   * @return string
-   */
-  public static function begin_html( $field ) {
+	/**
+	 * Opening markup for the field's wrapper.
+	 *
+	 * @param  object $field the field to work with.
+	 * @return string
+	 */
+	public static function begin_html( $field ) {
 
-    $output = '<div class="wrap-' . self::get_field_id( $field ) . '-field ' . self::render_classes( $field->class ) . '">';
+		$output = '<div class="wrap-' . esc_attr( $field->type ) . '-field">';
 
-    $output .= '<label class="wp-label" for="' . esc_attr( $field->id ) . '">' . esc_html( $field->label ) . '</label>';
+		$output .= '<label class="wp-label" for="' . esc_attr( $field->id ) . '">' . esc_html( $field->label ) . '</label>';
 
-    return $output;
+		return $output;
 
-  }
+	}
 
-  /**
-   * Markup specific to the field's type.
-   *
-   * @param  object $field the field to work with.
-   * @return string
-   */
-  public static function html( $field ) {
+	/**
+	 * Markup specific to the field's type.
+	 *
+	 * @param  object $field the field to work with.
+	 * @return string
+	 */
+	public static function html( $field ) {
 
-    return '';
+		return '';
 
-  }
+	}
 
-  /**
-   * Closing markup for the field's wrapper.
-   *
-   * @param  object $field the field to work with.
-   * @return string
-   */
-  public static function end_html( $field ) {
+	/**
+	 * Closing markup for the field's wrapper.
+	 *
+	 * @param  object $field the field to work with.
+	 * @return string
+	 */
+	public static function end_html( $field ) {
 
-    return '</div>';
+		$output  = ( isset( $field->desc ) && ! empty( $field->desc ) ) ? '<p class="'. self::get_field_id( $field ) .'-description" class="description">' . esc_html( $field->desc ) . '</p>': '';
+		$output .= '</div>';
 
-  }
+		return $output;
 
-  /**
-   * Helper method to render attributes of each field.
-   *
-   * @param  array $attributes list of attributes.
-   * @return string
-   */
-  protected static function render_attributes( $attributes ) {
+	}
 
-    $output = '';
+	/**
+	 * Return an escaped value.
+	 *
+	 * @param  object $field the field to work with.
+	 * @return mixed        the value of the field.
+	 */
+	public static function value( $field ) {
 
-    foreach ( $attributes as $key => $value ) {
+		return '';
 
-      if ( false === $value || '' === $value )
+	}
+
+	/**
+	 * Normalize parameters for all fields.
+	 *
+	 * @param  string $type  field type.
+	 * @param  array $field  settings passed when invoking the field.
+	 * @return array
+	 */
+	public static function normalize( $type, $field ) {
+
+		$field = wp_parse_args( $field, array(
+			'id'          => '',
+			'name'        => '',
+			'std'         => '',
+			'type'        => $type,
+			'desc'        => '',
+			'placeholder' => '',
+			'class'       => '',
+			'disabled'    => false,
+			'required'    => false,
+			'attributes'  => array(),
+		) );
+
+		return (object) $field;
+
+	}
+
+	/**
+	 * Retrieve field's attributes.
+	 *
+	 * @param  object $field field to work with.
+	 * @return array
+	 */
+	public static function get_attributes( $field ) {
+
+		$attributes = wp_parse_args( $field->attributes, array(
+			'disabled' => $field->disabled,
+			'required' => $field->required,
+			'class'    => strtolower( __NAMESPACE__.'-'.$field->type ) . ' ' . self::render_classes( $field->class ),
+			'id'       => $field->id,
+			'name'     => $field->name,
+		) );
+
+		return $attributes;
+
+	}
+
+	/**
+	 * Generate the field's ID or name based on whichever is filled.
+	 *
+	 * @since 1.0.0
+	 * @param  object $field settings.
+	 * @return string
+	 */
+	protected static function get_field_id( $field ) {
+
+		$id_or_name = '';
+
+		if( isset( $field->id ) && ! empty( $field->id ) ) {
+			$id_or_name = $field->id;
+		} else {
+			$id_or_name = str_replace(' ', '_', $field->name );
+		}
+
+		return $id_or_name;
+
+	}
+
+	/**
+	 * Helper method to render css classes of each field.
+	 *
+	 * @param  array $classes classes to render.
+	 * @return string
+	 */
+	protected static function render_classes( $classes ) {
+
+		$classes = implode( ' ', array_map( 'sanitize_html_class', explode( ' ', $classes ) ) );
+
+		return $classes;
+
+	}
+
+	/**
+	 * Helper method to render attributes of each field.
+	 *
+	 * @param  array $attributes list of attributes.
+	 * @return string
+	 */
+	protected static function render_attributes( $attributes ) {
+
+		$output = '';
+
+		foreach ( $attributes as $key => $value ) {
+
+			if ( false === $value || '' === $value )
 				continue;
 
-      if ( is_array( $value ) ) {
-        $value = json_encode( $value );
-      }
+			if ( is_array( $value ) ) {
+				$value = json_encode( $value );
+			}
 
-      $output .= sprintf( true === $value ? ' %s' : ' %s="%s"', $key, esc_attr( $value ) );
+			$output .= sprintf( true === $value ? ' %s' : ' %s="%s"', $key, esc_attr( $value ) );
 
-    }
+		}
 
-    return $output;
+		return $output;
 
-  }
-
-  /**
-   * Generate the field's ID or name based on whichever is filled.
-   *
-   * @since 1.0.0
-   * @param  object $field settings.
-   * @return string
-   */
-  protected static function get_field_id( $field ) {
-
-    $id_or_name = '';
-
-    if( isset( $field->id ) && ! empty( $field->id ) ) {
-      $id_or_name = $field->id;
-    } else {
-      $id_or_name = str_replace(' ', '_', $field->name );
-    }
-
-    return $id_or_name;
-
-  }
-
-  /**
-   * Helper method to render css classes of each field.
-   *
-   * @param  array $classes classes to render.
-   * @return string
-   */
-  protected static function render_classes( $classes ) {
-
-    $classes = implode( ' ', array_map( 'sanitize_html_class', explode( ' ', $classes ) ) );
-
-    return $classes;
-
-  }
+	}
 
 }
