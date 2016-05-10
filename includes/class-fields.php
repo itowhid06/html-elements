@@ -122,27 +122,6 @@ abstract class Fields {
 	}
 
 	/**
-	 * Generate the field's ID or name based on whichever is filled.
-	 *
-	 * @since 1.0.0
-	 * @param  object $field settings.
-	 * @return string
-	 */
-	protected static function get_field_id( $field ) {
-
-		$id_or_name = '';
-
-		if( isset( $field->id ) && ! empty( $field->id ) ) {
-			$id_or_name = $field->id;
-		} else {
-			$id_or_name = str_replace(' ', '_', $field->name );
-		}
-
-		return $id_or_name;
-
-	}
-
-	/**
 	 * Helper method to render css classes of each field.
 	 *
 	 * @param  array $classes classes to render.
