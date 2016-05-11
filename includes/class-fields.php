@@ -2,7 +2,7 @@
 /**
  * Abstract class to handle all the field types.
  *
- * @author     Alessandro Tesor
+ * @author     Alessandro Tesoro
  * @version    1.0.0
  * @copyright  (c) 2016 Alessandro Tesoro
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GNU LESSER GENERAL PUBLIC LICENSE
