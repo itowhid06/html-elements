@@ -20,7 +20,7 @@ $elements = new HTML_Elements;
 Now you've got access to the "render" method:
 
 ```
-$render->render( 'checkbox', array(
+$elements->render( 'checkbox', array(
   'id'    => 'test',
   'name'  => 'test',
   'value' => true,
@@ -33,7 +33,7 @@ The render method accepts 2 parameters, the field type and an array containing t
 Additional attributes can be passed to each field type by using the "attributes" parameter. Example:
 
 ```
-$test->render( 'text', array(
+$elements->render( 'text', array(
   'id'         => 'test',
   'name'       => 'test',
   'value'      => 'something',
