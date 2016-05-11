@@ -2,7 +2,7 @@ This class was built for my own need. Decided to share in case someone else need
 
 ### Example usage:
 
-This is meant to be used within a plugin so make sure you've uploaded this class and all the other files within your plugin's folder.
+This is meant to be used within a WordPress plugin so make sure you've uploaded this class and all the other files within your plugin's folder.
 
 Then:
 
