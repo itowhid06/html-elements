@@ -30,7 +30,9 @@ abstract class Fields {
 
 		$output = '<div class="wrap-' . esc_attr( $field->type ) . '-field">';
 
-		$output .= '<label class="wp-label" for="' . esc_attr( $field->id ) . '">' . esc_html( $field->label ) . '</label>';
+		if( isset( $field->label ) ) {
+			$output .= '<label class="wp-label" for="' . esc_attr( $field->id ) . '">' . esc_html( $field->label ) . '</label>';
+		}
 
 		return $output;
 
@@ -85,17 +87,17 @@ abstract class Fields {
 	public static function normalize( $type, $field ) {
 
 		$field = wp_parse_args( $field, array(
-			'id'          => '',
-			'name'        => '',
-			'value'       => '',
-			'options'     => array(),
-			'type'        => $type,
-			'desc'        => '',
-			'placeholder' => '',
-			'class'       => '',
-			'disabled'    => false,
-			'required'    => false,
-			'attributes'  => array(),
+			'id'               => '',
+			'name'             => '',
+			'value'            => '',
+			'options'          => array(),
+			'type'             => $type,
+			'desc'             => '',
+			'placeholder'      => '',
+			'class'            => '',
+			'disabled'         => false,
+			'required'         => false,
+			'attributes'       => array(),
 		) );
 
 		return (object) $field;
