@@ -60,4 +60,22 @@ class Radio extends Fields {
 
 	}
 
+	/**
+	 * Modify the attributes for this field.
+	 *
+	 * @param  object $field the field to work with.
+	 * @return array
+	 */
+	public static function get_attributes( $field ) {
+
+		$attributes = parent::get_attributes( $field );
+
+		$attributes = wp_parse_args( $attributes, array(
+			'value' => parent::get_value( $field ),
+		) );
+
+		return $attributes;
+
+	}
+
 }
