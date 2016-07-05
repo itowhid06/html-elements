@@ -8,9 +8,9 @@
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GNU LESSER GENERAL PUBLIC LICENSE
 */
 
-namespace AT\Fields;
+namespace TDP\Fields;
 
-use AT\Fields;
+use TDP\Fields;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;

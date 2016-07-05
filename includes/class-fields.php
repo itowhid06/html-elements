@@ -8,7 +8,7 @@
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GNU LESSER GENERAL PUBLIC LICENSE
 */
 
-namespace AT;
+namespace TDP;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
