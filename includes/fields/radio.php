@@ -38,43 +38,13 @@ class Radio extends Fields {
 
 					$selected = checked( self::get_value( $field ), $key, false );
 
-					$output .= '<label><input type="radio" '.self::render_attributes( $attributes ).' '. $selected .'>'.esc_html( $option ).'</label>';
+					$output .= '<label><input type="radio" value="'. esc_attr( $key ) .'" '.self::render_attributes( $attributes ).' '. $selected .'>'.esc_html( $option ).'</label>';
 
 				}
 
 			}
 
 		return $output;
-
-	}
-
-	/**
-	 * Retrieve the value for this field.
-	 *
-	 * @param  object $field field to work with.
-	 * @return mixed
-	 */
-	public static function get_value( $field ) {
-
-		return esc_attr( $field->value );
-
-	}
-
-	/**
-	 * Modify the attributes for this field.
-	 *
-	 * @param  object $field the field to work with.
-	 * @return array
-	 */
-	public static function get_attributes( $field ) {
-
-		$attributes = parent::get_attributes( $field );
-
-		$attributes = wp_parse_args( $attributes, array(
-			'value' => parent::get_value( $field ),
-		) );
-
-		return $attributes;
 
 	}
 
